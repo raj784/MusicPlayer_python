@@ -1,0 +1,125 @@
+
+# Music Player Using Python
+
+import random
+from pygame import mixer
+from tkinter import *
+import os
+import getpass
+from tkinter import filedialog
+import pymsgbox
+
+user = getpass.getuser()  # For getting User name of your System
+
+
+def music_player():
+    mc_frame = Tk()
+    frame = Frame(mc_frame, height="1000", bg="black")
+    frame.pack(fill=X)
+    bg_image = PhotoImage(file=r"D:\Projects\Python_Projects\Project_Files\Jarvis_Files\Icon_icon_Bg_Pics"
+                               r"\musicPlayer_BG.png")
+    # Above Paste location of the pic You Wanna use as Background Pic
+
+    bg_label = Label(frame, image=bg_image, height=520, width=450)
+    bg_label.place(x=0, y=0)
+
+    def pause():
+        mixer.init()
+        mixer.music.pause()
+
+    def resume():
+        mixer.init()
+        mixer.music.unpause()
+
+    def next_play():
+        try:
+            a = os.listdir("C:\\Users\\" + user + "\\music")  # For Listing All files in music folder
+            x = len(a) - 1
+            z = []
+            while x != 0:
+                if a[x].endswith(".mp3"):
+                    z.append(a[x])
+                x -= 1
+            random_file = random.choice(z)
+            file = "C:\\Users\\" + user + "\\music\\" + random_file
+            try:
+                mixer.init()
+                mixer.music.load(file)
+                mixer.music.play()
+            except Exception as music_player_error_1:
+                print(music_player_error_1)
+                pass
+        except IndexError:
+            pymsgbox.alert("No Music File Found at " + "C:\\Users\\" + user + "\\music", "File Not Found")
+        except Exception as music_player_error_2:
+            print(music_player_error_2)
+            pass
+
+    def play():
+        try:
+            a = os.listdir("C:\\Users\\" + user + "\\music")
+            x = len(a) - 1
+            z = []
+            while x != 0:
+                if a[x].endswith(".mp3"):
+                    z.append(a[x])
+                x -= 1
+            name = z[0]
+            file = "C:\\Users\\" + user + "\\music\\" + name
+            try:
+                mixer.init()
+                mixer.music.load(file)
+                mixer.music.play()
+            except Exception as music_player_error_3:
+                print(music_player_error_3)
+                pass
+        except IndexError:
+            pymsgbox.alert("No Music File Found at " + "C:\\Users\\" + user + "\\music", "File Not Found")
+        except Exception as music_player_error_4:
+            print(music_player_error_4)
+            pass
+
+    def exit_player():
+        pause()
+        mc_frame.destroy()
+
+    def open_file():
+        audio = filedialog.askopenfilename(initialdir="/", title="Select an Audio File",
+                                           filetype=(("Audio files", "*.mp3"), ("Audio files", "*.mp3")))
+        try:
+            mixer.init()
+            mixer.music.load(audio)
+            mixer.music.set_volume(0.7)
+            mixer.music.play()
+        except Exception as music_player_error_5:
+            print(music_player_error_5)
+            pass
+
+    label = Label(frame, text="MUSIC_PLAYER 2.O", width="27", font="bold, 22", bg="black", fg="grey")
+    label.place(x=0, y=0)
+    btn = Button(frame, text="PLAY", width="15", font="bold, 20", command=play, bg='grey')
+    btn.place(x=175, y=90)
+    btn = Button(frame, text="PAUSE", width="15", font="bold, 20", command=pause, bg='grey')
+    btn.place(x=175, y=160)
+    btn = Button(frame, text="RESUME", width="15", font="bold, 20", command=resume, bg='grey')
+    btn.place(x=175, y=230)
+    btn = Button(frame, text="NEXT", width="15", font="bold, 20", command=next_play, bg='grey')
+    btn.place(x=175, y=300)
+    btn = Button(frame, text="EXIT", width="15", font="bold, 20", command=exit_player, bg='grey')
+    btn.place(x=175, y=370)
+    btn = Button(frame, text="OPEN FILE", width="15", font="bold, 20", command=open_file, bg='grey')
+    btn.place(x=175, y=440)
+    mc_frame.geometry("450x520+530+0")
+    mc_frame.resizable(False, False)
+    mc_frame.title("Music Player")
+    mc_frame.iconbitmap('D:\\Projects\\Python_Projects\\Project_Files\\Jarvis_Files\\Icon_icon_Bg_Pics\\'
+                        'MusicPlayer.ico')
+    # Above Paste Location of the Pic You Wanna use as Icon Pic (it should be in .ico format)
+    mc_frame.mainloop()
+
+
+if __name__ == "__main__":
+    music_player()
+
+
+
